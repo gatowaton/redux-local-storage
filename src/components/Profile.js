@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfile } from '../features/authSlice';
+import { Link } from 'react-router-dom';
 
 function Profile() {
   const [isEditing, setIsEditing] = useState(false);
@@ -31,14 +32,15 @@ function Profile() {
   const handleSaveClick = () => {
     // Verifica que el usuario esté definido antes de actualizar el perfil
     if (currentUser) {
-      dispatch(
-        updateProfile({
-          username: currentUser.username,
-          age: formData.age,
-          address: formData.address,
-          imageUrl: formData.imageUrl,
-        })
-      );
+          // Crea una copia del objeto currentUser
+    const updatedUser = { ...currentUser };
+      // Actualiza el perfil en el estado local
+      updatedUser.age = formData.age;
+      updatedUser.address = formData.address;
+      updatedUser.imageUrl = formData.imageUrl;
+
+      // Envía los cambios al estado global a través de updateProfile
+      dispatch(updateProfile(updatedUser));
 
       // Deshabilita la edición del perfil
       setIsEditing(false);
@@ -52,6 +54,9 @@ function Profile() {
 
   return (
     <div>
+      <Link to={"/"}>
+        home
+      </Link>
       <h2>User Profile</h2>
       {currentUser && ( // Verifica que el usuario esté definido antes de mostrar su información
         <div>

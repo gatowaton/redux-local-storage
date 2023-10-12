@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { register } from '../features/authSlice';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
@@ -20,6 +21,9 @@ const Register = () => {
 
   return (
     <div>
+      <Link to={"/"}>
+        home
+      </Link>
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <input

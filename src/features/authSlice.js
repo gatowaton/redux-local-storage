@@ -15,8 +15,9 @@ const authSlice = createSlice({
             age: '',
             address: '',
             imageUrl: '',
+            password: '',
         },
-        users: [], // Almacenar todos los usuarios registrados
+        users: getUserDataFromLocalStorage() ? [getUserDataFromLocalStorage()] : [], // Inicializa la lista de usuarios con el usuario actual
     },
     reducers: {
         login: (state, action) => {
@@ -29,18 +30,23 @@ const authSlice = createSlice({
 
             if (userToLogin) {
                 state.isAuthenticated = true;
-                state.currentUser = userToLogin;
+                state.user = userToLogin;
 
                 // Guardar el usuario actual en el localStorage al iniciar sesión
                 localStorage.setItem('user', JSON.stringify(userToLogin));
             } else {
                 state.isAuthenticated = false;
-                state.currentUser = null;
             }
         },
         logout: (state) => {
             state.isAuthenticated = false;
-            state.user = null;
+            state.user = {
+                username: '',
+                age: '',
+                address: '',
+                imageUrl: '',
+                password: '',
+            };
 
             // Eliminar el usuario del localStorage al cerrar sesión
             localStorage.removeItem('user');
@@ -48,6 +54,10 @@ const authSlice = createSlice({
         register: (state, action) => {
             // Agregar el nuevo usuario a la lista de usuarios
             state.users.push(action.payload);
+
+            // Actualizar el usuario actual en el estado y en el localStorage
+            // state.user = { ...action.payload };
+            // localStorage.setItem('user', JSON.stringify(state.user));
 
             // Guardar la lista actualizada de usuarios registrados en el localStorage
             localStorage.setItem('users', JSON.stringify(state.users));
@@ -58,9 +68,16 @@ const authSlice = createSlice({
             state.user.age = age;
             state.user.address = address;
             state.user.imageUrl = imageUrl;
-      
+
             // Actualiza los datos en el localStorage cuando se actualiza el perfil
             localStorage.setItem('user', JSON.stringify(state.user));
+
+            // Actualiza también la lista de usuarios con los datos actualizados
+            const updatedUserIndex = state.users.findIndex(user => user.username === state.user.username);
+            if (updatedUserIndex !== -1) {
+                state.users[updatedUserIndex] = { ...state.user };
+                localStorage.setItem('users', JSON.stringify(state.users));
+            }
         },
     },
 });
