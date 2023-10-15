@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch  } from 'react-redux';
-import { logout } from './features/authSlice';
+import { logout, getAllUsers } from './features/authSlice';
 
 function Home() {
       // Obtén los datos del usuario desde el estado de Redux.
   const user = useSelector((state) => state.auth.user);
+  //todos los usuarios
+  const users = useSelector((state) => state.auth.users);
   const dispatch = useDispatch();
+
+  
+  useEffect(() => {
+    // Obtener la lista de usuarios desde el almacenamiento local
+    const storedUsers = JSON.parse(localStorage.getItem('users'));
+
+    // Actualizar la lista de usuarios en el estado
+    dispatch(getAllUsers(storedUsers));
+  }, [dispatch]);
 
   const handleLogout = () => {
     // Dispatch de la acción de logout
@@ -32,6 +43,22 @@ function Home() {
           <button onClick={handleLogout}>Logout</button>
         </div>
       )}
+
+<h2>Other Registered Users:</h2>
+{users && users.length > 0 && (
+  <div>
+    <h2>Other Registered Users:</h2>
+    <ul>
+      {users
+        .filter((u) => u.username !== user.username)
+        .map((u) => (
+          <li key={u.username}>
+            {u.username} - Age: {u.age || 'N/A'}, Address: {u.address || 'N/A'}
+          </li>
+        ))}
+    </ul>
+  </div>
+)}
     </div>
   )
 }

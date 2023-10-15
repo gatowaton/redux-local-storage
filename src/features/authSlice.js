@@ -53,14 +53,20 @@ const authSlice = createSlice({
         },
         register: (state, action) => {
             // Agregar el nuevo usuario a la lista de usuarios
-            state.users.push(action.payload);
+            // state.users.push(action.payload);
+            // localStorage.setItem('users', JSON.stringify(state.users));
 
-            // Actualizar el usuario actual en el estado y en el localStorage
-            // state.user = { ...action.payload };
-            // localStorage.setItem('user', JSON.stringify(state.user));
+                // Hacer una copia de la lista actual de usuarios
+    const updatedUsers = [...state.users];
 
-            // Guardar la lista actualizada de usuarios registrados en el localStorage
-            localStorage.setItem('users', JSON.stringify(state.users));
+    // Agregar el nuevo usuario a la copia de la lista de usuarios
+    updatedUsers.push(action.payload);
+
+    // Actualizar el estado con la nueva lista de usuarios
+    state.users = updatedUsers;
+
+    // Guardar la lista actualizada de usuarios registrados en el localStorage
+    localStorage.setItem('users', JSON.stringify(updatedUsers));
         },
         updateProfile: (state, action) => {
             const { username, age, address, imageUrl } = action.payload;
@@ -79,8 +85,11 @@ const authSlice = createSlice({
                 localStorage.setItem('users', JSON.stringify(state.users));
             }
         },
+        getAllUsers: (state, action) => {
+            state.users = action.payload;
+        },
     },
 });
 
-export const { login, logout, register, updateProfile } = authSlice.actions;
+export const { login, logout, register, updateProfile, getAllUsers } = authSlice.actions;
 export default authSlice.reducer;

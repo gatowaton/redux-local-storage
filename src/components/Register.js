@@ -7,23 +7,27 @@ const Register = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validar y guardar el nuevo usuario en Redux
-    if (formData.username && formData.password) {
-      dispatch(register(formData));
+    try {
+      // Validar y guardar el nuevo usuario en Redux
+      if (formData.username && formData.password) {
+        // Dispatch de la acción 'register'
+        await dispatch(register(formData));
 
-      // Limpiar el formulario
-      setFormData({ username: '', password: '' });
+        // Limpia el formulario
+        setFormData({ username: '', password: '' });
+      }
+    } catch (error) {
+      console.error('Error al registrar el usuario:', error);
+      // Aquí puedes manejar el error de registro, si es necesario
     }
   };
 
   return (
     <div>
-      <Link to={"/"}>
-        home
-      </Link>
+      <Link to="/">Home</Link>
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <input
