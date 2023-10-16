@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { addPost } from '../features/postSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import "./CreatePost.css"
 
 function CreatePost() {
   const [formData, setFormData] = useState({
@@ -46,33 +47,33 @@ function CreatePost() {
   };
 
   return (
-    <div>
+    <div className='create-post'>
       <h2>Create a New Post</h2>
       <form onSubmit={handleSubmit}>
-        <div>
           <label>Title:</label>
-          <input
+        <div>
+          <input className='create-post-input'
             type="text"
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           />
         </div>
-        <div>
           <label>Description:</label>
-          <textarea
+        <div>
+          <textarea className='create-post-input'
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           />
         </div>
-        <div>
           <label>Image URL:</label>
-          <input
+        <div>
+          <input className='create-post-input'
             type="text"
             value={formData.image}
             onChange={(e) => setFormData({ ...formData, image: e.target.value })}
           />
         </div>
-        <button type="submit">Create Post</button>
+        <button className="button-8" type="submit">Create Post</button>
       </form>
     </div>
   )

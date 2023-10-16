@@ -1,0 +1,16 @@
+.create-post{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: #27374D;
+    padding: 2em;
+    color: white;
+    border-radius: 20px;
+}
+
+.create-post-input{
+    margin: 0.5em auto;
+    border-radius: 20px;
+    border: solid 1px black;
+    padding: 0.5em;
+}
