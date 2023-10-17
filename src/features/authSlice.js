@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const defaultImg = "https://media.wired.co.uk/photos/60c8730fa81eb7f50b44037e/16:9/w_1600,c_limit/1521-WIRED-Cat.jpeg"
+
 // Función para obtener los datos del usuario desde el localStorage
 const getUserDataFromLocalStorage = () => {
     const userData = localStorage.getItem('user');
@@ -14,7 +16,7 @@ const authSlice = createSlice({
             username: '', // otros campos existentes
             age: '',
             address: '',
-            imageUrl: '',
+            imageUrl: "",
             password: '',
         },
         users: getUserDataFromLocalStorage() ? [getUserDataFromLocalStorage()] : [], // Inicializa la lista de usuarios con el usuario actual
@@ -52,21 +54,20 @@ const authSlice = createSlice({
             localStorage.removeItem('user');
         },
         register: (state, action) => {
-            // Agregar el nuevo usuario a la lista de usuarios
-            // state.users.push(action.payload);
-            // localStorage.setItem('users', JSON.stringify(state.users));
+            const newUser = action.payload;
+            newUser.imageUrl = defaultImg;
 
-                // Hacer una copia de la lista actual de usuarios
-    const updatedUsers = [...state.users];
+            // Hacer una copia de la lista actual de usuarios
+            const updatedUsers = [...state.users];
 
-    // Agregar el nuevo usuario a la copia de la lista de usuarios
-    updatedUsers.push(action.payload);
+            // Agregar el nuevo usuario a la copia de la lista de usuarios
+            updatedUsers.push(newUser);
 
-    // Actualizar el estado con la nueva lista de usuarios
-    state.users = updatedUsers;
+            // Actualizar el estado con la nueva lista de usuarios
+            state.users = updatedUsers;
 
-    // Guardar la lista actualizada de usuarios registrados en el localStorage
-    localStorage.setItem('users', JSON.stringify(updatedUsers));
+            // Guardar la lista actualizada de usuarios registrados en el localStorage
+            localStorage.setItem('users', JSON.stringify(updatedUsers));
         },
         updateProfile: (state, action) => {
             const { username, age, address, imageUrl } = action.payload;

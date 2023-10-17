@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllUsers } from './features/authSlice';
-import { addAllPosts} from './features/postSlice';
+import { addAllPosts } from './features/postSlice';
 import CreatePost from './components/CreatePost';
 
 function Home() {
@@ -27,32 +27,38 @@ function Home() {
     // Obtener la lista de posts desde el almacenamiento local
     const storedPosts = JSON.parse(localStorage.getItem('posts')) || [];
 
-  // Actualizar la lista de usuarios y de posts en el estado
-  dispatch(getAllUsers(storedUsers));
-  dispatch(addAllPosts(storedPosts));
+    // Actualizar la lista de usuarios y de posts en el estado
+    dispatch(getAllUsers(storedUsers));
+    dispatch(addAllPosts(storedPosts));
   }, [dispatch]);
 
   return (
     <div className='page'>
 
       <h2>Welcome to the Home Page</h2>
-      {user && (
+      {isAuthenticated && (
         <div>
-          <p>Hello, {user.username}!</p>
+          <h3>Hello, {user.username}!</h3>
+          <img className='profile-img' src={user.imageUrl} alt={user.imageUrl}  />
         </div>
       )}
 
-{isAuthenticated && <CreatePost />}
+      {isAuthenticated && <CreatePost />}
       {users && users.length > 0 && (
         <div>
-          <h2>Other Registered Users:</h2>
+          <h2>Users Connected</h2>
           <ul>
             {users
               .filter((u) => u.username !== user.username)
               .map((u) => (
-                <li key={u.username}>
-                  {u.username} - Age: {u.age || 'N/A'}, Address: {u.address || 'N/A'}
-                </li>
+                <div className='users-container' key={u.username}>
+                <div>
+                  <img className='users-img' src={u.imageUrl}   alt={u.imageUrl}  />  
+                </div>
+                <div>
+                <p>{u.username}</p> <p>Age: {u.age || "#"}</p> <p>Address: {u.address || "#"}</p>
+                </div> 
+                </div>
               ))}
           </ul>
         </div>
@@ -64,9 +70,9 @@ function Home() {
           <div className='post' key={post.createdAt}>
             <h3>{post.title}</h3>
             <p>Posted by {post.username} on {post.createdAt}</p>
-            <hr/>
+            <hr />
             <img className='post-img' src={post.image} alt={post.title} />
-            <hr/>
+            <hr />
             <p>{post.description}</p>
           </div>
         ))}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../features/authSlice'; // Asegúrate de importar la acción adecuadamente
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [formData, setFormData] = useState({ username: '', password: '' });
@@ -33,10 +33,8 @@ const Login = () => {
     };
 
     return (
-        <div>
-            <Link to={"/"}>
-            home
-            </Link>
+        <div className='page-login'>
+
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
                 <input
